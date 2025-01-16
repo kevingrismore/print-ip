@@ -1,9 +1,7 @@
 from prefect import flow
-import socket
+from requests import get
 
 @flow(log_prints=True)
 def print_ip():
-  s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-  s.connect(("8.8.8.8", 80))
-  print(s.getsockname()[0])
-  s.close()
+  ip = get('https://api.ipify.org').content.decode('utf8')
+  print('My public IP address is: {}'.format(ip))
